@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        table.center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $('#search_stock_form').on('submit', function (e) {
+                $("#search_result").empty();
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: "/stock?stock=" + $("#stock_name").val(),
+                    success: function (result) {
+                        let span = $('<span>Total record: ' + result.length + '</span><br/>')
+                        $("#search_result").append(span);
+                        let table = $('<table>' +
+                            '<tr>' +
+                            '<td>quarter' +
+                            '</td>' +
+                            '<td>stock' +
+                            '</td>' +
+                            '<td>date' +
+                            '</td>' +
+                            '<td>open' +
+                            '</td>' +
+                            '<td>high' +
+                            '</td>' +
+                            '<td>low' +
+                            '</td>' +
+                            '<td>close' +
+                            '</td>' +
+                            '<td>volume' +
+                            '</td>' +
+                            '<td>percent_change_price' +
+                            '</td>' +
+                            '<td>percent_change_volume_over_last_wk' +
+                            '</td>' +
+                            '<td>previous_weeks_volume' +
+                            '</td>' +
+                            '<td>next_weeks_open' +
+                            '</td>' +
+                            '<td>next_weeks_close' +
+                            '</td>' +
+                            '<td>percent_change_next_weeks_price' +
+                            '</td>' +
+                            '<td>days_to_next_dividend' +
+                            '</td>' +
+                            '<td>percent_return_next_dividend' +
+                            '</td>' +
+                            '</tr>' +
+                            '</table>');
+                        let keys = Object.keys(result[0])
+                        let columnCount = keys.length
+                        for (let i = 0; i < result.length; i++) {
+                            let row = $('<tr></tr>');
+                            for (let j = 0; j < 16; j++) {
+                                let rowData = $('<td></td>').text(result[i][keys[j]]);
+                                row.append(rowData);
+                            }
+                            table.append(row);
+                        }
+                        if ($('table').length) {
+                            $("#search_result tr:first").after(row);
+                        } else {
+                            $('#search_result').append(table);
+                        }
+                    }
+                });
+                e.preventDefault();
+            });
+        });
+
+    </script>
+    <title>Query Stock</title>
+</head>
+<body>
+<form id="search_stock_form">
+    <h2>Search stock market data</h2>
+    <label for="stock_name">Stock name:</label>
+    <input id="stock_name" type="search" name="stock" placeholder="Stock name"/> <br>
+    <input type="submit" value="search">
+</form>
+<br>
+<div id="search_result">
+</div>
+</body>
+</html>

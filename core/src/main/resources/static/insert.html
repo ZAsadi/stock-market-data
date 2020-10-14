@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#insert_stock_form').on('submit', function (e) {
+                let formData = $('#insert_stock_form').serializeArray();
+                document.getElementById("insert_stock_form").reset();
+                let data = {};
+                $.each(formData,
+                    function (i, v) {
+                        if(v.value !== "") {
+                            data[v.name] = v.value;
+                        }
+                    });
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/stock",
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    success: function (result) {
+                        alert("Stock market data added successfully")
+                    },
+                    error: function (error) {
+                        alert(JSON.stringify(error))
+                    }
+                });
+                e.preventDefault();
+            })
+        });
+
+
+    </script>
+    <title>Insert Stock</title>
+</head>
+<body>
+<form id="insert_stock_form">
+    <h2>Insert stock market data</h2>
+    <label>
+        quarter:
+        <input type="number" name="quarter" step="any" required/>
+    </label>
+    <br>
+    <label>
+        stock:
+        <input type="text" name="stock" required/>
+    </label>
+    <br>
+    <label>
+        date:
+        <input type="text" name="date" required/>
+    </label>
+    <br>
+    <label>
+        open:
+        <input type="text" name="open"/>
+    </label>
+    <br>
+    <label>
+        high:
+        <input type="text" name="high"/>
+    </label>
+    <br>
+    <label>
+        low:
+        <input type="text" name="low"/>
+    </label>
+    <br>
+    <label>
+        close:
+        <input type="text" name="close"/>
+    </label>
+    <br>
+    <label>
+        volume:
+        <input type="number" name="volume"/>
+    </label>
+    <br>
+    <label>
+        percent_change_price:
+        <input type="number" name="percentChangePrice"/>
+    </label>
+    <br>
+    <label>
+        percent_change_volume_over_last_wk:
+        <input type="number" name="percentChangeVolumeOverLastWeek"/>
+    </label>
+    <br>
+    <label>
+        previous_weeks_volume:
+        <input type="number" name="previousWeeksVolume"/>
+    </label>
+    <br>
+    <label>
+        next_weeks_open:
+        <input type="text" name="nextWeekOpen"/>
+    </label>
+    <br>
+    <label>
+        next_weeks_close:
+        <input type="text" name="nextWeekClose"/>
+    </label>
+    <br>
+    <label>
+        percent_change_next_weeks_price:
+        <input type="number" name="percentChangeNextWeeksPrice"/>
+    </label>
+    <br>
+    <label>
+        days_to_next_dividend:
+        <input type="number" name="daysToNextDividend"/>
+    </label>
+    <br>
+    <label>
+        percent_return_next_dividend:
+        <input type="number" name="percentReturnNextDividend"/>
+    </label>
+    <br>
+    <input type="submit" value="submit">
+</form>
+</body>
+</html>

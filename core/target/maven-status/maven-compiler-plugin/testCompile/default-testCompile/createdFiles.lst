@@ -1,0 +1,4 @@
+com/rbc/stockmarket/controller/StockControllerTests.class
+com/rbc/stockmarket/service/DatabaseStorageServiceTests.class
+com/rbc/stockmarket/controller/FileUploadControllerTest.class
+com/rbc/stockmarket/service/StockServiceTests.class
